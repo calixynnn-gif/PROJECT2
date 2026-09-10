@@ -1,1929 +1,1117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Battle</title>
 
-<title>QuickBite - Food Delivery</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<style>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-/* =========================
-   GENERAL
-========================= */
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        body {
+            margin: 0;
+            background: #080812;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f6f8;
-    color: #222;
-}
+        /* =========================
+           TITLE
+        ========================= */
 
+        h1 {
+            text-align: center;
+            margin-top: 25px;
+            color: #ff65ae;
+            font-size: 34px;
+        }
 
-/* =========================
-   HEADER
-========================= */
+        /* =========================
+           ARENA - PC
+        ========================= */
 
-header {
-    background: white;
-    padding: 18px 7%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+        .arena {
+            position: absolute;
 
-    position: sticky;
-    top: 0;
-    z-index: 100;
+            width: 80%;
+            max-width: 850px;
+            height: 400px;
 
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-}
+            left: 50%;
+            top: 52%;
 
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    color: #00a86b;
-}
+            transform: translate(-50%, -50%);
 
-.location {
-    color: #666;
-    font-size: 14px;
-}
+            border: 4px solid #ff65ae;
+            border-radius: 15px;
 
-.location b {
-    color: #222;
-}
+            background: linear-gradient(
+                #171727,
+                #0b0b14
+            );
 
-.cart-btn {
-    border: none;
-    background: #00a86b;
-    color: white;
+            box-shadow: 0 0 30px #ff65ae55;
 
-    padding: 12px 18px;
+            overflow: hidden;
+        }
 
-    border-radius: 25px;
+        /* =========================
+           FLOOR
+        ========================= */
 
-    cursor: pointer;
+        .floor {
+            position: absolute;
 
-    font-weight: bold;
-}
+            bottom: 55px;
+            left: 5%;
 
-.cart-btn:hover {
-    background: #008f5b;
-}
+            width: 90%;
+            height: 3px;
 
+            background: #ff65ae;
+            box-shadow: 0 0 10px #ff65ae;
+        }
 
-/* =========================
-   HERO
-========================= */
+        /* =========================
+           HP
+        ========================= */
 
-.hero {
-    padding: 50px 7%;
+        .hp {
+            position: absolute;
 
-    background:
-        linear-gradient(
-            135deg,
-            #dff9ed,
-            #ffffff
-        );
-}
+            top: 20px;
 
-.hero h1 {
-    font-size: 42px;
-    margin-bottom: 10px;
-}
+            width: 180px;
+            height: 18px;
 
-.hero p {
-    color: #666;
-    margin-bottom: 25px;
-}
+            border: 2px solid white;
+            border-radius: 10px;
 
+            overflow: hidden;
+        }
 
-/* =========================
-   SEARCH
-========================= */
+        .hpbar {
+            height: 100%;
+            width: 100%;
 
-.search {
-    max-width: 600px;
+            transition: width 0.3s;
+        }
 
-    background: white;
+        #heroHPBox {
+            left: 25px;
+        }
 
-    border-radius: 30px;
+        #enemyHPBox {
+            right: 25px;
+        }
 
-    padding: 15px 20px;
+        #heroHP {
+            background: #45eaff;
+        }
 
-    display: flex;
-    align-items: center;
-    gap: 10px;
+        #enemyHP {
+            background: #ff4b6e;
+        }
 
-    box-shadow:
-        0 5px 20px rgba(0,0,0,.08);
-}
+        /* =========================
+           LABELS
+        ========================= */
 
-.search input {
-    border: none;
-    outline: none;
+        .label {
+            position: absolute;
 
-    width: 100%;
+            top: 42px;
 
-    font-size: 16px;
-}
+            font-size: 13px;
+        }
 
+        #heroLabel {
+            left: 25px;
+        }
 
-/* =========================
-   SECTION
-========================= */
+        #enemyLabel {
+            right: 25px;
+        }
 
-.section {
-    padding: 30px 7%;
-}
+        /* =========================
+           STICKMAN
+        ========================= */
 
-.section h2 {
-    margin-bottom: 20px;
-}
+        .stickman {
+            position: absolute;
 
+            width: 70px;
+            height: 150px;
 
-/* =========================
-   CATEGORIES
-========================= */
+            bottom: 58px;
+        }
 
-.categories {
-    display: flex;
-    gap: 15px;
+        #hero {
+            left: 13%;
+        }
 
-    overflow-x: auto;
-}
+        #enemy {
+            right: 13%;
+        }
 
-.category {
-    min-width: 90px;
+        .head {
+            position: absolute;
 
-    background: white;
+            width: 38px;
+            height: 38px;
 
-    padding: 15px;
+            border: 4px solid white;
+            border-radius: 50%;
 
-    border-radius: 15px;
+            left: 16px;
+            top: 0;
+        }
 
-    text-align: center;
+        .body {
+            position: absolute;
 
-    cursor: pointer;
+            width: 4px;
+            height: 65px;
 
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.06);
+            background: white;
 
-    transition: .2s;
-}
+            left: 34px;
+            top: 38px;
+        }
 
-.category:hover {
-    transform: translateY(-3px);
-}
+        .arm {
+            position: absolute;
 
-.category span {
-    display: block;
-    font-size: 32px;
-    margin-bottom: 8px;
-}
+            width: 48px;
+            height: 4px;
 
+            background: white;
 
-/* =========================
-   FOOD GRID
-========================= */
+            top: 55px;
 
-.food-grid {
-    display: grid;
+            transform-origin: left center;
+        }
 
-    grid-template-columns:
-        repeat(auto-fit, minmax(230px, 1fr));
+        .leftArm {
+            left: 34px;
+            transform: rotate(145deg);
+        }
 
-    gap: 20px;
-}
+        .rightArm {
+            left: 34px;
+            transform: rotate(35deg);
+        }
 
+        .leg {
+            position: absolute;
 
-/* =========================
-   FOOD CARD
-========================= */
+            width: 52px;
+            height: 4px;
 
-.food-card {
-    background: white;
+            background: white;
 
-    border-radius: 18px;
+            top: 100px;
 
-    overflow: hidden;
+            transform-origin: left center;
+        }
 
-    box-shadow:
-        0 4px 15px rgba(0,0,0,.07);
+        .leftLeg {
+            left: 34px;
+            transform: rotate(120deg);
+        }
 
-    transition: .2s;
-}
+        .rightLeg {
+            left: 34px;
+            transform: rotate(60deg);
+        }
 
-.food-card:hover {
-    transform: translateY(-5px);
-}
+        /* ENEMY MIRROR */
 
-.food-image {
-    height: 160px;
+        #enemy .leftArm,
+        #enemy .rightArm,
+        #enemy .leftLeg,
+        #enemy .rightLeg {
+            transform-origin: right center;
+        }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+        #enemy .leftArm {
+            transform: rotate(35deg);
+        }
 
-    font-size: 80px;
+        #enemy .rightArm {
+            transform: rotate(145deg);
+        }
 
-    background: #eee;
-}
+        #enemy .leftLeg {
+            transform: rotate(60deg);
+        }
 
-.food-info {
-    padding: 17px;
-}
+        #enemy .rightLeg {
+            transform: rotate(120deg);
+        }
 
-.food-info h3 {
-    margin-bottom: 6px;
-}
+        /* =========================
+           FIGHTING
+        ========================= */
 
-.restaurant {
-    font-size: 13px;
-    color: #777;
+        .fighting .leftArm {
+            animation: leftPunch 0.35s infinite alternate;
+        }
 
-    margin-bottom: 10px;
-}
+        .fighting .rightArm {
+            animation: rightPunch 0.35s infinite alternate;
+        }
 
-.rating {
-    color: #f4a400;
-    font-size: 14px;
-}
+        .fighting .leftLeg {
+            animation: leftKick 0.5s infinite alternate;
+        }
 
-.price {
-    font-size: 18px;
-    font-weight: bold;
+        .fighting .rightLeg {
+            animation: rightKick 0.5s infinite alternate;
+        }
 
-    margin: 10px 0;
-}
+        @keyframes leftPunch {
+            from {
+                transform: rotate(145deg);
+            }
 
-.add-btn {
-    width: 100%;
+            to {
+                transform: rotate(90deg);
+            }
+        }
 
-    border: none;
+        @keyframes rightPunch {
+            from {
+                transform: rotate(35deg);
+            }
 
-    background: #00a86b;
-    color: white;
+            to {
+                transform: rotate(5deg);
+            }
+        }
 
-    padding: 11px;
+        @keyframes leftKick {
+            from {
+                transform: rotate(120deg);
+            }
 
-    border-radius: 10px;
+            to {
+                transform: rotate(145deg);
+            }
+        }
 
-    cursor: pointer;
+        @keyframes rightKick {
+            from {
+                transform: rotate(60deg);
+            }
 
-    font-weight: bold;
-}
+            to {
+                transform: rotate(35deg);
+            }
+        }
 
-.add-btn:hover {
-    background: #008f5b;
-}
+        /* =========================
+           ATTACK
+        ========================= */
 
+        .attack {
+            animation: attack 0.3s ease;
+        }
 
-/* =========================
-   CART PANEL
-========================= */
+        @keyframes attack {
+            0% {
+                transform: translateX(0);
+            }
 
-.cart-panel {
-    position: fixed;
+            50% {
+                transform: translateX(35px);
+            }
 
-    right: -430px;
-    top: 0;
+            100% {
+                transform: translateX(0);
+            }
+        }
 
-    width: 400px;
-    max-width: 100%;
+        .enemyAttack {
+            animation: enemyAttack 0.3s ease;
+        }
 
-    height: 100vh;
+        @keyframes enemyAttack {
+            0% {
+                transform: translateX(0);
+            }
 
-    background: white;
+            50% {
+                transform: translateX(-35px);
+            }
 
-    z-index: 200;
+            100% {
+                transform: translateX(0);
+            }
+        }
 
-    padding: 25px;
+        /* =========================
+           HIT
+        ========================= */
 
-    box-shadow:
-        -5px 0 20px rgba(0,0,0,.15);
+        .hit {
+            animation: hit 0.25s;
+        }
 
-    transition: .3s;
+        @keyframes hit {
+            0%, 100% {
+                filter: brightness(1);
+            }
 
-    display: flex;
-    flex-direction: column;
-}
+            50% {
+                filter: brightness(4);
+            }
+        }
 
-.cart-panel.active {
-    right: 0;
-}
+        /* =========================
+           DEATH
+        ========================= */
 
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+        .dead {
+            animation: fall 1.5s forwards;
+        }
 
-    margin-bottom: 20px;
-}
+        @keyframes fall {
+            0% {
+                transform: rotate(0deg) translateY(0);
+            }
 
-.close-cart {
-    border: none;
+            100% {
+                transform: rotate(90deg) translateY(65px);
+                opacity: 0.2;
+            }
+        }
 
-    background: #eee;
+        /* =========================
+           CENTER MESSAGE
+        ========================= */
 
-    width: 35px;
-    height: 35px;
+        #message {
+            position: absolute;
 
-    border-radius: 50%;
+            top: 50%;
+            left: 50%;
 
-    cursor: pointer;
-}
+            transform: translate(-50%, -50%);
 
-.cart-items {
-    flex: 1;
+            width: 80%;
+            max-width: 600px;
 
-    overflow-y: auto;
-}
+            text-align: center;
 
+            color: #ffb3d7;
 
-/* =========================
-   CART ITEM
-========================= */
+            font-size: 19px;
+            font-weight: bold;
 
-.cart-item {
-    display: flex;
+            line-height: 1.6;
 
-    align-items: center;
+            background: rgba(8, 8, 18, 0.96);
 
-    gap: 12px;
+            padding: 25px 30px;
 
-    padding: 15px 0;
+            border: 2px solid #ff65ae;
+            border-radius: 15px;
 
-    border-bottom: 1px solid #eee;
-}
+            box-shadow:
+                0 0 15px #ff65ae,
+                inset 0 0 20px #ff65ae22;
 
-.cart-item-icon {
-    font-size: 38px;
-}
+            opacity: 0;
+            visibility: hidden;
 
-.cart-item-info {
-    flex: 1;
-}
+            z-index: 20;
 
-.cart-item-info h4 {
-    margin-bottom: 5px;
-}
+            transition:
+                opacity 0.8s ease,
+                visibility 0.8s ease;
+        }
 
-.cart-item-info p {
-    color: #777;
-    font-size: 13px;
-}
+        #message.show {
+            opacity: 1;
+            visibility: visible;
+        }
 
+        /* =========================
+           MESSAGE TEXT
+        ========================= */
 
-/* QUANTITY */
+        #messageText {
+            min-height: 70px;
 
-.quantity {
-    display: flex;
+            display: flex;
 
-    align-items: center;
+            align-items: center;
+            justify-content: center;
 
-    gap: 10px;
+            animation: textAppear 0.7s ease;
+        }
 
-    margin-top: 10px;
-}
+        #messageText.change {
+            animation: textChange 0.6s ease;
+        }
 
-.quantity button {
-    width: 28px;
-    height: 28px;
+        @keyframes textAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
 
-    border: none;
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 
-    border-radius: 8px;
+        @keyframes textChange {
+            0% {
+                opacity: 0;
+                transform: translateY(25px);
+            }
 
-    background: #00a86b;
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    color: white;
+        /* =========================
+           NEXT BUTTON
+        ========================= */
 
-    font-size: 18px;
+        #nextButton {
+            margin-top: 18px;
 
-    font-weight: bold;
+            padding: 10px 28px;
 
-    cursor: pointer;
-}
+            border: 2px solid #ff65ae;
+            border-radius: 25px;
 
-.quantity button:hover {
-    background: #008f5b;
-}
+            background: #ff65ae;
 
-.quantity span {
-    min-width: 20px;
+            color: white;
 
-    text-align: center;
+            font-size: 15px;
+            font-weight: bold;
 
-    font-weight: bold;
-}
+            cursor: pointer;
 
+            box-shadow: 0 0 15px #ff65ae88;
 
-/* =========================
-   CART FOOTER
-========================= */
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+        }
 
-.cart-footer {
-    border-top: 1px solid #ddd;
+        #nextButton:hover {
+            transform: scale(1.08);
 
-    padding-top: 20px;
-}
+            box-shadow:
+                0 0 25px #ff65ae,
+                0 0 40px #ff65ae55;
+        }
 
-.cart-subtotal,
-.cart-delivery,
-.cart-total {
-    display: flex;
+        #nextButton:active {
+            transform: scale(0.95);
+        }
 
-    justify-content: space-between;
+        /* =====================================================
+           📱 MOBILE PHONE
+           ===================================================== */
 
-    margin-bottom: 10px;
-}
+        @media screen and (max-width: 600px) {
 
-.cart-subtotal,
-.cart-delivery {
-    color: #666;
-}
+            h1 {
+                margin-top: 12px;
+                font-size: 24px;
+            }
 
-.cart-total {
-    font-size: 21px;
+            .arena {
+                width: calc(100% - 16px);
 
-    font-weight: bold;
+                height: 72vh;
 
-    margin-top: 12px;
-}
+                min-height: 420px;
+                max-height: 650px;
 
-.checkout {
-    width: 100%;
+                top: 53%;
 
-    border: none;
+                border-width: 3px;
+                border-radius: 12px;
+            }
 
-    background: #00a86b;
+            /* MOBILE HP */
 
-    color: white;
+            .hp {
+                top: 14px;
 
-    padding: 15px;
+                width: 35%;
 
-    border-radius: 12px;
+                height: 16px;
+            }
 
-    font-size: 16px;
+            #heroHPBox {
+                left: 14px;
+            }
 
-    font-weight: bold;
+            #enemyHPBox {
+                right: 14px;
+            }
 
-    cursor: pointer;
+            /* MOBILE LABEL */
 
-    margin-top: 10px;
-}
+            .label {
+                top: 35px;
+                font-size: 10px;
+            }
 
+            #heroLabel {
+                left: 14px;
+            }
 
-/* =========================
-   OVERLAY
-========================= */
+            #enemyLabel {
+                right: 14px;
+            }
 
-.overlay {
-    position: fixed;
+            /* MOBILE CHARACTERS */
 
-    inset: 0;
+            .stickman {
+                bottom: 68px;
 
-    background: rgba(0,0,0,.4);
+                transform: scale(0.80);
+            }
 
-    z-index: 150;
+            #hero {
+                left: 5%;
+            }
 
-    display: none;
-}
+            #enemy {
+                right: 5%;
+            }
 
-.overlay.active {
-    display: block;
-}
+            /* MOBILE FLOOR */
 
+            .floor {
+                bottom: 62px;
+            }
 
-/* =========================
-   CHECKOUT MODAL
-========================= */
+            /* MOBILE MESSAGE */
 
-.modal {
-    position: fixed;
+            #message {
+                width: 88%;
 
-    z-index: 300;
+                max-width: none;
 
-    left: 50%;
-    top: 50%;
+                padding: 20px 14px;
 
-    transform:
-        translate(-50%, -50%)
-        scale(.8);
+                font-size: 16px;
 
-    background: white;
+                line-height: 1.5;
 
-    width: 90%;
-    max-width: 450px;
+                border-radius: 13px;
+            }
 
-    max-height: 90vh;
+            #messageText {
+                min-height: 75px;
 
-    overflow-y: auto;
+                padding: 0 5px;
+            }
 
-    padding: 30px;
+            /* MOBILE BUTTON */
 
-    border-radius: 20px;
+            #nextButton {
+                margin-top: 14px;
 
-    box-shadow:
-        0 10px 40px rgba(0,0,0,.25);
+                min-width: 125px;
 
-    display: none;
+                padding: 11px 25px;
 
-    transition: .2s;
-}
+                font-size: 14px;
 
-.modal.active {
-    display: block;
+                touch-action: manipulation;
+            }
+        }
 
-    transform:
-        translate(-50%, -50%)
-        scale(1);
-}
+        /* =====================================================
+           📱 SMALL PHONE
+           ===================================================== */
 
-.modal h2 {
-    margin-bottom: 8px;
-}
+        @media screen and (max-width: 400px) {
 
-.modal > p {
-    color: #666;
+            h1 {
+                font-size: 21px;
+                margin-top: 10px;
+            }
 
-    margin-bottom: 20px;
-}
+            .arena {
+                width: calc(100% - 10px);
 
-.modal h3 {
-    margin-bottom: 10px;
-}
+                height: 73vh;
 
+                min-height: 390px;
+            }
 
-/* INPUTS */
+            .hp {
+                width: 34%;
+                height: 15px;
+            }
 
-.modal input,
-.modal select {
-    width: 100%;
+            .label {
+                font-size: 9px;
+            }
 
-    padding: 13px;
+            .stickman {
+                transform: scale(0.70);
+            }
 
-    margin-bottom: 12px;
+            #hero {
+                left: 2%;
+            }
 
-    border: 1px solid #ddd;
+            #enemy {
+                right: 2%;
+            }
 
-    border-radius: 10px;
+            #message {
+                width: 92%;
 
-    outline: none;
+                padding: 18px 12px;
 
-    font-size: 14px;
-}
+                font-size: 15px;
 
+                line-height: 1.45;
+            }
 
-/* =========================
-   CHECKOUT SUMMARY
-========================= */
+            #messageText {
+                min-height: 70px;
+            }
 
-.checkout-summary {
-    background: #f6f7f8;
+            #nextButton {
+                min-width: 115px;
 
-    padding: 15px;
+                padding: 10px 22px;
 
-    border-radius: 12px;
+                font-size: 13px;
+            }
+        }
 
-    margin: 15px 0;
-}
+        /* =====================================================
+           📱 VERY SMALL PHONE
+           ===================================================== */
 
-.checkout-summary > div {
-    display: flex;
+        @media screen and (max-width: 350px) {
 
-    justify-content: space-between;
+            h1 {
+                font-size: 19px;
+            }
 
-    margin: 8px 0;
-}
+            .arena {
+                height: 70vh;
+                min-height: 360px;
+            }
 
-.checkout-summary hr {
-    border: none;
+            .stickman {
+                transform: scale(0.60);
+            }
 
-    border-top: 1px solid #ddd;
+            #message {
+                width: 94%;
 
-    margin: 12px 0;
-}
+                padding: 16px 10px;
 
-.checkout-total {
-    font-size: 20px;
+                font-size: 14px;
+            }
 
-    color: #00a86b;
-}
+            #messageText {
+                min-height: 65px;
+            }
 
+            #nextButton {
+                min-width: 105px;
 
-/* =========================
-   BUTTONS
-========================= */
+                padding: 9px 18px;
+            }
+        }
 
-.confirm {
-    width: 100%;
+        /* =====================================================
+           📱 MOBILE LANDSCAPE
+           ===================================================== */
 
-    padding: 14px;
+        @media screen and (max-width: 900px)
+               and (orientation: landscape) {
 
-    border: none;
+            h1 {
+                margin-top: 4px;
+                font-size: 20px;
+            }
 
-    border-radius: 10px;
+            .arena {
+                width: 92%;
 
-    background: #00a86b;
+                height: 82vh;
 
-    color: white;
+                min-height: 280px;
 
-    font-weight: bold;
+                top: 54%;
+            }
 
-    cursor: pointer;
-}
+            .stickman {
+                bottom: 35px;
 
-.cancel {
-    width: 100%;
+                transform: scale(0.65);
+            }
 
-    padding: 12px;
+            .floor {
+                bottom: 32px;
+            }
 
-    border: none;
+            #message {
+                width: 75%;
 
-    background: #eee;
+                padding: 12px 18px;
 
-    border-radius: 10px;
+                font-size: 14px;
+            }
 
-    margin-top: 8px;
+            #messageText {
+                min-height: 45px;
+            }
 
-    cursor: pointer;
-}
+            #nextButton {
+                margin-top: 7px;
 
+                padding: 7px 22px;
+            }
+        }
 
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-    margin-top: 40px;
-
-    background: #111;
-
-    color: white;
-
-    padding: 30px 7%;
-
-    text-align: center;
-}
-
-footer span {
-    color: #00c77d;
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:600px) {
-
-    header {
-        padding: 15px;
-    }
-
-    .location {
-        display: none;
-    }
-
-    .hero {
-        padding: 35px 20px;
-    }
-
-    .hero h1 {
-        font-size: 32px;
-    }
-
-    .section {
-        padding: 25px 20px;
-    }
-
-    .cart-panel {
-        width: 100%;
-    }
-
-}
-
-</style>
+    </style>
 </head>
-
 
 <body>
 
+    <h1>Man vs. self</h1>
 
-<!-- =========================
-     HEADER
-========================= -->
+    <div class="arena">
 
-<header>
+        <!-- HERO HP -->
+        <div id="heroHPBox" class="hp">
+            <div id="heroHP" class="hpbar"></div>
+        </div>
 
-    <div class="logo">
-        Cali's on your way🍃 The foods are not available in real time
-    </div>
+        <!-- ENEMY HP -->
+        <div id="enemyHPBox" class="hp">
+            <div id="enemyHP" class="hpbar"></div>
+        </div>
 
-    <div class="location">
+        <!-- LABELS -->
+        <div id="heroLabel" class="label">
+            CALI
+        </div>
 
-        📍 Deliver to:
-        <b>Philippines</b>
+        <div id="enemyLabel" class="label">
+            FUTURE 💔
+        </div>
 
-    </div>
+        <!-- HERO -->
+        <div id="hero" class="stickman fighting">
 
-    <button
-        class="cart-btn"
-        onclick="openCart()">
+            <div class="head"></div>
+            <div class="body"></div>
 
-        🛒 Cart
-        (<span id="cartCount">0</span>)
+            <div class="arm leftArm"></div>
+            <div class="arm rightArm"></div>
 
-    </button>
-
-</header>
-
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero">
-
-    <h1>
-        Good food.<br>
-        Delivered fast. 🍔
-    </h1>
-
-    <p>
-        Discover your favorite meals
-        and have them delivered to your door.
-    </p>
-
-    <div class="search">
-
-        🔍
-
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Search for food..."
-            onkeyup="searchFood()"
-        >
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================
-     CATEGORIES
-========================= -->
-
-<section class="section">
-
-    <h2>
-        choose your meals
-    </h2>
-
-    <div class="categories">
-
-        <div
-            class="category"
-            onclick="filterFood('all')">
-
-            <span>🍽️</span>
-            All
+            <div class="leg leftLeg"></div>
+            <div class="leg rightLeg"></div>
 
         </div>
 
+        <!-- ENEMY -->
+        <div id="enemy" class="stickman fighting">
 
-        <div
-            class="category"
-            onclick="filterFood('burger')">
+            <div class="head"></div>
+            <div class="body"></div>
 
-            <span>🍔</span>
-            Burger
+            <div class="arm leftArm"></div>
+            <div class="arm rightArm"></div>
 
-        </div>
-
-
-        <div
-            class="category"
-            onclick="filterFood('pizza')">
-
-            <span>🍕</span>
-            Pizza
+            <div class="leg leftLeg"></div>
+            <div class="leg rightLeg"></div>
 
         </div>
 
+        <!-- FLOOR -->
+        <div class="floor"></div>
 
-        <div
-            class="category"
-            onclick="filterFood('chicken')">
+        <!-- CENTER MESSAGE -->
+        <div id="message">
 
-            <span>🍗</span>
-            Chicken
+            <div id="messageText">
+                I gave everything I had...
+            </div>
 
-        </div>
-
-
-        <div
-            class="category"
-            onclick="filterFood('drink')">
-
-            <span>🥤</span>
-            Drinks
-
-        </div>
-
-
-        <div
-            class="category"
-            onclick="filterFood('dessert')">
-
-            <span>🍰</span>
-            Dessert
-
-        </div>
-        <div
-            class="category"
-            onclick="filterFood('More')">
-
-            <span>?</span>
-            More
+            <button id="nextButton">
+                Next
+            </button>
 
         </div>
 
     </div>
 
-</section>
 
+    <script>
 
+        /* =========================
+           GAME VARIABLES
+        ========================= */
 
-<!-- =========================
-     FOOD
-========================= -->
+        let heroHP = 100;
+        let enemyHP = 100;
 
-<section class="section">
+        let battleOver = false;
+        let turn = 0;
 
-    <h2>
-        Popular near you
-    </h2>
 
-    <div
-        class="food-grid"
-        id="foodGrid">
+        const hero = document.getElementById("hero");
+        const enemy = document.getElementById("enemy");
 
+        const heroBar = document.getElementById("heroHP");
+        const enemyBar = document.getElementById("enemyHP");
 
-        <!-- BURGER -->
+        const message = document.getElementById("message");
+        const messageText = document.getElementById("messageText");
+        const nextButton = document.getElementById("nextButton");
 
-        <div
-            class="food-card"
-            data-category="burger"
-            data-name="Classic Cheeseburger">
 
-            <div class="food-image">
-                🍔
-            </div>
+        /* =========================
+           MESSAGE SENTENCES
+        ========================= */
 
-            <div class="food-info">
+        const messages = [
 
-                <h3>
-                    Classic Cheeseburger
-                </h3>
+            "I gave everything I had...",
 
-                <div class="restaurant">
-                    Burger House
-                </div>
+            "I fought until the very end.",
 
-                <div class="rating">
-                    ⭐ 4.8
-                </div>
+            "BUT...",
 
-                <div class="price">
-                    0
-                </div>
+            "I, cali ready to delve."
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Classic Cheeseburger',
-                        0,
-                        '🍔'
-                    )">
+        ];
 
-                    Add to cart
 
-                </button>
+        let messageIndex = 0;
 
-            </div>
 
-        </div>
+        /* =========================
+           HERO ATTACK
+        ========================= */
 
+        function heroAttack() {
 
+            if (battleOver) return;
 
-        <!-- PIZZA -->
+            hero.classList.add("attack");
+            enemy.classList.add("hit");
 
-        <div
-            class="food-card"
-            data-category="pizza"
-            data-name="Pepperoni Pizza">
+            setTimeout(function () {
 
-            <div class="food-image">
-                🍕
-            </div>
+                hero.classList.remove("attack");
+                enemy.classList.remove("hit");
 
-            <div class="food-info">
+            }, 300);
 
-                <h3>
-                    Pepperoni Pizza
-                </h3>
 
-                <div class="restaurant">
-                    Pizza Corner
-                </div>
+            enemyHP -= 8;
 
-                <div class="rating">
-                    ⭐ 4.9
-                </div>
+            if (enemyHP < 0) {
+                enemyHP = 0;
+            }
 
-                <div class="price">
-                    0
-                </div>
+            enemyBar.style.width = enemyHP + "%";
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Pepperoni Pizza',
-                        0,
-                        '🍕'
-                    )">
 
-                    Add to cart
+            if (enemyHP <= 0) {
+                enemyDies();
+            }
+        }
 
-                </button>
 
-            </div>
+        /* =========================
+           ENEMY ATTACK
+        ========================= */
 
-        </div>
+        function enemyAttack() {
 
+            if (battleOver) return;
 
+            enemy.classList.add("enemyAttack");
+            hero.classList.add("hit");
 
-        <!-- CHICKEN -->
+            setTimeout(function () {
 
-        <div
-            class="food-card"
-            data-category="chicken"
-            data-name="Crispy Fried Chicken">
+                enemy.classList.remove("enemyAttack");
+                hero.classList.remove("hit");
 
-            <div class="food-image">
-                🍗
-            </div>
+            }, 300);
 
-            <div class="food-info">
 
-                <h3>
-                    Crispy Fried Chicken
-                </h3>
+            heroHP -= 20;
 
-                <div class="restaurant">
-                    Chicken Station
-                </div>
+            if (heroHP < 0) {
+                heroHP = 0;
+            }
 
-                <div class="rating">
-                    ⭐ 4.7
-                </div>
+            heroBar.style.width = heroHP + "%";
 
-                <div class="price">
-                    0
-                </div>
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Crispy Fried Chicken',
-                        0,
-                        '🍗'
-                    )">
+            if (heroHP <= 0) {
+                heroDies();
+            }
+        }
 
-                    Add to cart
 
-                </button>
+        /* =========================
+           HERO DIES
+        ========================= */
 
-            </div>
+        function heroDies() {
 
-        </div>
+            if (battleOver) return;
 
+            battleOver = true;
 
+            hero.classList.remove("fighting");
+            hero.classList.add("dead");
 
-        <!-- DRINK -->
 
-        <div
-            class="food-card"
-            data-category="drink"
-            data-name="Iced Coffee">
+            setTimeout(function () {
 
-            <div class="food-image">
-                🧋
-            </div>
+                message.classList.add("show");
 
-            <div class="food-info">
+                messageIndex = 0;
 
-                <h3>
-                    Iced Coffee
-                </h3>
+                messageText.textContent =
+                    messages[messageIndex];
 
-                <div class="restaurant">
-                    Coffee Daily
-                </div>
+                nextButton.textContent = "Next";
 
-                <div class="rating">
-                    ⭐ 4.8
-                </div>
+            }, 800);
+        }
 
-                <div class="price">
-                    0
-                </div>
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Iced Coffee',
-                        0
-                        '🧋'
-                    )">
+        /* =========================
+           ENEMY DIES
+        ========================= */
 
-                    Add to cart
+        function enemyDies() {
 
-                </button>
+            if (battleOver) return;
 
-            </div>
+            battleOver = true;
 
-        </div>
+            enemy.classList.remove("fighting");
+            enemy.classList.add("dead");
+        }
 
 
+        /* =========================
+           NEXT ATTACK
+        ========================= */
 
-        <!-- DESSERT -->
+        function nextAttack() {
 
-        <div
-            class="food-card"
-            data-category="dessert"
-            data-name="Chocolate Cake">
+            if (battleOver) return;
 
-            <div class="food-image">
-                🍰
-            </div>
+            turn++;
 
-            <div class="food-info">
 
-                <h3>
-                    Chocolate Cake
-                </h3>
+            if (turn % 2 === 1) {
 
-                <div class="restaurant">
-                    Sweet Treats
-                </div>
+                heroAttack();
 
-                <div class="rating">
-                    ⭐ 4.9
-                </div>
+            } else {
 
-                <div class="price">
-                    0
-                </div>
+                enemyAttack();
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Chocolate Cake',
-                        0,
-                        '🍰'
-                    )">
+            }
 
-                    Add to cart
 
-                </button>
+            if (!battleOver) {
 
-            </div>
+                setTimeout(nextAttack, 650);
 
-        </div>
+            }
+        }
 
 
+        /* =========================
+           NEXT MESSAGE
+        ========================= */
 
-        <!-- BURGER 2 -->
+        nextButton.addEventListener("click", function () {
 
-        <div
-            class="food-card"
-            data-category="burger"
-            data-name="Bacon Burger">
+            if (messageIndex < messages.length - 1) {
 
-            <div class="food-image">
-                🍔
-            </div>
+                messageIndex++;
 
-            <div class="food-info">
 
-                <h3>
-                    Bacon Burger
-                </h3>
+                /* Restart animation */
 
-                <div class="restaurant">
-                    Burger House
-                </div>
+                messageText.classList.remove("change");
 
-                <div class="rating">
-                    ⭐ 4.8
-                </div>
+                void messageText.offsetWidth;
 
-                <div class="price">
-                    0
-                </div>
+                messageText.classList.add("change");
 
-                <button
-                    class="add-btn"
-                    onclick="addToCart(
-                        'Bacon Burger',
-                        0,
-                        '🍔'
-                    )">
 
-                    Add to cart
+                /* Change sentence */
 
-                </button>
+                messageText.textContent =
+                    messages[messageIndex];
 
-            </div>
 
-        </div>
+                /* Last sentence */
 
+                if (messageIndex === messages.length - 1) {
 
-    </div>
+                    nextButton.textContent = "Continue";
 
-</section>
+                }
 
+            } else {
 
+                /* Close message */
 
-<!-- =========================
-     OVERLAY
-========================= -->
+                message.classList.remove("show");
 
-<div
-    class="overlay"
-    id="overlay"
-    onclick="closeCart()">
-</div>
-
-
-
-<!-- =========================
-     CART
-========================= -->
-
-<div
-    class="cart-panel"
-    id="cartPanel">
-
-
-    <div class="cart-header">
-
-        <h2>
-            Your Cart 🛒
-        </h2>
-
-        <button
-            class="close-cart"
-            onclick="closeCart()">
-
-            ✕
-
-        </button>
-
-    </div>
-
-
-    <div
-        class="cart-items"
-        id="cartItems">
-
-        <p style="color:#777;">
-            Your cart is empty.
-        </p>
-
-    </div>
-
-
-    <div class="cart-footer">
-
-
-        <div class="cart-subtotal">
-
-            <span>
-                Subtotal
-            </span>
-
-            <span>
-                ₱<span id="cartSubtotal">0</span>
-            </span>
-
-        </div>
-
-
-        <div class="cart-delivery">
-
-            <span>
-                Delivery Fee
-            </span>
-
-            <span>
-                $100
-            </span>
-
-        </div>
-
-
-        <div class="cart-total">
-
-            <span>
-                Total
-            </span>
-
-            <span>
-                ₱<span id="total">0</span>
-            </span>
-
-        </div>
-
-
-        <button
-            class="checkout"
-            onclick="checkout()">
-
-            Checkout
-
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================
-     CHECKOUT MODAL
-========================= -->
-
-<div
-    class="modal"
-    id="checkoutModal">
-
-
-    <h2>
-        Checkout 🛵
-    </h2>
-
-    <p>
-        Review your order and choose
-        your payment method.
-    </p>
-
-
-    <!-- CUSTOMER -->
-
-    <input
-        type="text"
-        id="name"
-        placeholder="Your name"
-    >
-
-
-    <input
-        type="text"
-        id="address"
-        placeholder="Delivery address"
-    >
-
-
-    <!-- SUMMARY -->
-
-    <div class="checkout-summary">
-
-
-        <div>
-
-            <span>
-                Subtotal
-            </span>
-
-            <b>
-                ₱<span id="checkoutSubtotal">
-                    0
-                </span>
-            </b>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                Delivery Fee
-            </span>
-
-            <b>
-                $100
-            </b>
-
-        </div>
-
-
-        <hr>
-
-
-        <div class="checkout-total">
-
-            <span>
-                Total
-            </span>
-
-            <b>
-                ₱<span id="checkoutTotal">
-                    0
-                </span>
-            </b>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- PAYMENT -->
-
-    <h3>
-        Payment Method
-    </h3>
-
-
-    <select id="payment">
-
-        <option value="Cash on Delivery">
-            💵 Cash on Delivery
-        </option>
-
-        <option value="GCash">
-            📱 Borrow
-        </option>
-
-        <option value="Credit / Debit Card">
-            💳 Credit / Debit Card
-        </option>
-
-    </select>
-
-
-    <button
-        class="confirm"
-        onclick="confirmOrder()">
-
-        Place Order
-
-    </button>
-
-
-    <button
-        class="cancel"
-        onclick="closeCheckout()">
-
-        Cancel
-
-    </button>
-
-
-</div>
-
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer>
-
-    <p>
-        © 2026
-        <span>QuickBite</span>
-        — Your food, your way.
-    </p>
-
-</footer>
-
-
-
-<script>
-
-/* =========================
-   CART DATA
-========================= */
-
-let cart = [];
-
-const deliveryFee = 49;
-
-
-/* =========================
-   ADD TO CART
-========================= */
-
-function addToCart(name, price, icon) {
-
-    const existing =
-        cart.find(item => item.name === name);
-
-
-    if (existing) {
-
-        existing.quantity++;
-
-    } else {
-
-        cart.push({
-
-            name: name,
-            price: price,
-            icon: icon,
-            quantity: 1
+            }
 
         });
 
-    }
 
+        /* =========================
+           START BATTLE
+        ========================= */
 
-    updateCart();
+        setTimeout(nextAttack, 1200);
 
-}
-
-
-/* =========================
-   UPDATE CART
-========================= */
-
-function updateCart() {
-
-    const cartItems =
-        document.getElementById("cartItems");
-
-
-    /* TOTAL QUANTITY */
-
-    const itemCount =
-        cart.reduce(
-            (sum, item) =>
-            sum + item.quantity,
-            0
-        );
-
-
-    document.getElementById("cartCount")
-        .textContent = itemCount;
-
-
-    /* EMPTY */
-
-    if (cart.length === 0) {
-
-        cartItems.innerHTML =
-            `
-            <p style="color:#777;">
-                Your cart is empty.
-            </p>
-            `;
-
-        document.getElementById("cartSubtotal")
-            .textContent = "0";
-
-        document.getElementById("total")
-            .textContent = "0";
-
-        return;
-
-    }
-
-
-    cartItems.innerHTML = "";
-
-
-    let subtotal = 0;
-
-
-    /* CART ITEMS */
-
-    cart.forEach((item, index) => {
-
-
-        subtotal +=
-            item.price * item.quantity;
-
-
-        const div =
-            document.createElement("div");
-
-
-        div.className =
-            "cart-item";
-
-
-        div.innerHTML = `
-
-            <div class="cart-item-icon">
-                ${item.icon}
-            </div>
-
-            <div class="cart-item-info">
-
-                <h4>
-                    ${item.name}
-                </h4>
-
-                <p>
-                    $${item.price} each
-                </p>
-
-                <div class="quantity">
-
-                    <button
-                        onclick="decreaseQuantity(${index})">
-
-                        −
-
-                    </button>
-
-                    <span>
-                        ${item.quantity}
-                    </span>
-
-                    <button
-                        onclick="increaseQuantity(${index})">
-
-                        +
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <div>
-
-                <b>
-                    ₱${item.price * item.quantity}
-                </b>
-
-            </div>
-
-        `;
-
-
-        cartItems.appendChild(div);
-
-    });
-
-
-    /* TOTALS */
-
-    const total =
-        subtotal + deliveryFee;
-
-
-    document.getElementById("cartSubtotal")
-        .textContent = subtotal;
-
-
-    document.getElementById("total")
-        .textContent = total;
-
-}
-
-
-/* =========================
-   INCREASE QUANTITY
-========================= */
-
-function increaseQuantity(index) {
-
-    cart[index].quantity++;
-
-    updateCart();
-
-}
-
-
-/* =========================
-   DECREASE QUANTITY
-========================= */
-
-function decreaseQuantity(index) {
-
-    cart[index].quantity--;
-
-
-    if (cart[index].quantity <= 0) {
-
-        cart.splice(index, 1);
-
-    }
-
-
-    updateCart();
-
-}
-
-
-/* =========================
-   OPEN CART
-========================= */
-
-function openCart() {
-
-    document
-        .getElementById("cartPanel")
-        .classList.add("active");
-
-
-    document
-        .getElementById("overlay")
-        .classList.add("active");
-
-}
-
-
-/* =========================
-   CLOSE CART
-========================= */
-
-function closeCart() {
-
-    document
-        .getElementById("cartPanel")
-        .classList.remove("active");
-
-
-    document
-        .getElementById("overlay")
-        .classList.remove("active");
-
-}
-
-
-/* =========================
-   SEARCH FOOD
-========================= */
-
-function searchFood() {
-
-    const search =
-        document
-        .getElementById("searchInput")
-        .value
-        .toLowerCase();
-
-
-    const cards =
-        document.querySelectorAll(".food-card");
-
-
-    cards.forEach(card => {
-
-        const name =
-            card
-            .getAttribute("data-name")
-            .toLowerCase();
-
-
-        if (name.includes(search)) {
-
-            card.style.display =
-                "block";
-
-        } else {
-
-            card.style.display =
-                "none";
-
-        }
-
-    });
-
-}
-
-
-/* =========================
-   FILTER FOOD
-========================= */
-
-function filterFood(category) {
-
-    const cards =
-        document.querySelectorAll(".food-card");
-
-
-    cards.forEach(card => {
-
-
-        if (
-            category === "all" ||
-            card.dataset.category === category
-        ) {
-
-            card.style.display =
-                "block";
-
-        } else {
-
-            card.style.display =
-                "none";
-
-        }
-
-    });
-
-}
-
-
-/* =========================
-   CHECKOUT
-========================= */
-
-function checkout() {
-
-
-    if (cart.length === 0) {
-
-        alert(
-            "Your cart is empty! 🍔"
-        );
-
-        return;
-
-    }
-
-
-    let subtotal = 0;
-
-
-    cart.forEach(item => {
-
-        subtotal +=
-            item.price * item.quantity;
-
-    });
-
-
-    const total =
-        subtotal + deliveryFee;
-
-
-    document
-        .getElementById("checkoutSubtotal")
-        .textContent = subtotal;
-
-
-    document
-        .getElementById("checkoutTotal")
-        .textContent = total;
-
-
-    document
-        .getElementById("checkoutModal")
-        .classList.add("active");
-
-}
-
-
-/* =========================
-   CLOSE CHECKOUT
-========================= */
-
-function closeCheckout() {
-
-    document
-        .getElementById("checkoutModal")
-        .classList.remove("active");
-
-}
-
-
-/* =========================
-   CONFIRM ORDER
-========================= */
-
-function confirmOrder() {
-
-
-    const name =
-        document
-        .getElementById("name")
-        .value
-        .trim();
-
-
-    const address =
-        document
-        .getElementById("address")
-        .value
-        .trim();
-
-
-    const payment =
-        document
-        .getElementById("payment")
-        .value;
-
-
-    if (!name || !address) {
-
-        alert(
-            "Please enter your name and delivery address."
-        );
-
-        return;
-
-    }
-
-
-    let subtotal = 0;
-
-
-    cart.forEach(item => {
-
-        subtotal +=
-            item.price * item.quantity;
-
-    });
-
-
-    const total =
-        subtotal + deliveryFee;
-
-
-    alert(
-
-        "🎉 ORDER CONFIRMED!\n\n" +
-
-        "Customer: " +
-        name +
-        "\n\n" +
-
-        "Delivery Address:\n" +
-        address +
-        "\n\n" +
-
-        "Subtotal: ₱" +
-        subtotal +
-        "\n" +
-
-        "Delivery Fee: ₱" +
-        deliveryFee +
-        "\n" +
-
-        "Total: ₱" +
-        total +
-        "\n\n" +
-
-        "Payment: " +
-        payment +
-        "\n\n" +
-
-        "🛵 Your food is being prepared!"
-
-    );
-
-
-    /* RESET */
-
-    cart = [];
-
-    updateCart();
-
-    closeCheckout();
-
-    closeCart();
-
-
-    /* CLEAR INPUTS */
-
-    document.getElementById("name")
-        .value = "";
-
-    document.getElementById("address")
-        .value = "";
-
-}
-
-</script>
+    </script>
 
 </body>
 </html>
