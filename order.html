@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>QuickBite - Food Delivery</title>
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f6f8;
+    color: #222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background: white;
+    padding: 18px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #00a86b;
+}
+
+.location {
+    color: #666;
+    font-size: 14px;
+}
+
+.location b {
+    color: #222;
+}
+
+.cart-btn {
+    border: none;
+    background: #00a86b;
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 25px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.cart-btn:hover {
+    background: #008f5b;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    padding: 50px 7%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #dff9ed,
+            #ffffff
+        );
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+.search {
+    max-width: 600px;
+
+    background: white;
+
+    border-radius: 30px;
+
+    padding: 15px 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.08);
+}
+
+.search input {
+    border: none;
+    outline: none;
+
+    width: 100%;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+.section {
+    padding: 30px 7%;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   CATEGORIES
+========================= */
+
+.categories {
+    display: flex;
+    gap: 15px;
+
+    overflow-x: auto;
+}
+
+.category {
+    min-width: 90px;
+
+    background: white;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.06);
+
+    transition: .2s;
+}
+
+.category:hover {
+    transform: translateY(-3px);
+}
+
+.category span {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+
+/* =========================
+   FOOD GRID
+========================= */
+
+.food-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* =========================
+   FOOD CARD
+========================= */
+
+.food-card {
+    background: white;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.07);
+
+    transition: .2s;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+}
+
+.food-image {
+    height: 160px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 80px;
+
+    background: #eee;
+}
+
+.food-info {
+    padding: 17px;
+}
+
+.food-info h3 {
+    margin-bottom: 6px;
+}
+
+.restaurant {
+    font-size: 13px;
+    color: #777;
+
+    margin-bottom: 10px;
+}
+
+.rating {
+    color: #f4a400;
+    font-size: 14px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+
+    margin: 10px 0;
+}
+
+.add-btn {
+    width: 100%;
+
+    border: none;
+
+    background: #00a86b;
+    color: white;
+
+    padding: 11px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.add-btn:hover {
+    background: #008f5b;
+}
+
+
+/* =========================
+   CART PANEL
+========================= */
+
+.cart-panel {
+    position: fixed;
+
+    right: -430px;
+    top: 0;
+
+    width: 400px;
+    max-width: 100%;
+
+    height: 100vh;
+
+    background: white;
+
+    z-index: 200;
+
+    padding: 25px;
+
+    box-shadow:
+        -5px 0 20px rgba(0,0,0,.15);
+
+    transition: .3s;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-panel.active {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.close-cart {
+    border: none;
+
+    background: #eee;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+.cart-items {
+    flex: 1;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   CART ITEM
+========================= */
+
+.cart-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.cart-item-icon {
+    font-size: 38px;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-info h4 {
+    margin-bottom: 5px;
+}
+
+.cart-item-info p {
+    color: #777;
+    font-size: 13px;
+}
+
+
+/* QUANTITY */
+
+.quantity {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.quantity button {
+    width: 28px;
+    height: 28px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #00a86b;
+
+    color: white;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.quantity button:hover {
+    background: #008f5b;
+}
+
+.quantity span {
+    min-width: 20px;
+
+    text-align: center;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   CART FOOTER
+========================= */
+
+.cart-footer {
+    border-top: 1px solid #ddd;
+
+    padding-top: 20px;
+}
+
+.cart-subtotal,
+.cart-delivery,
+.cart-total {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.cart-subtotal,
+.cart-delivery {
+    color: #666;
+}
+
+.cart-total {
+    font-size: 21px;
+
+    font-weight: bold;
+
+    margin-top: 12px;
+}
+
+.checkout {
+    width: 100%;
+
+    border: none;
+
+    background: #00a86b;
+
+    color: white;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+}
+
+
+/* =========================
+   OVERLAY
+========================= */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.4);
+
+    z-index: 150;
+
+    display: none;
+}
+
+.overlay.active {
+    display: block;
+}
+
+
+/* =========================
+   CHECKOUT MODAL
+========================= */
+
+.modal {
+    position: fixed;
+
+    z-index: 300;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(.8);
+
+    background: white;
+
+    width: 90%;
+    max-width: 450px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.25);
+
+    display: none;
+
+    transition: .2s;
+}
+
+.modal.active {
+    display: block;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+}
+
+.modal h2 {
+    margin-bottom: 8px;
+}
+
+.modal > p {
+    color: #666;
+
+    margin-bottom: 20px;
+}
+
+.modal h3 {
+    margin-bottom: 10px;
+}
+
+
+/* INPUTS */
+
+.modal input,
+.modal select {
+    width: 100%;
+
+    padding: 13px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   CHECKOUT SUMMARY
+========================= */
+
+.checkout-summary {
+    background: #f6f7f8;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    margin: 15px 0;
+}
+
+.checkout-summary > div {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin: 8px 0;
+}
+
+.checkout-summary hr {
+    border: none;
+
+    border-top: 1px solid #ddd;
+
+    margin: 12px 0;
+}
+
+.checkout-total {
+    font-size: 20px;
+
+    color: #00a86b;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.confirm {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #00a86b;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.cancel {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    margin-top: 8px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 40px;
+
+    background: #111;
+
+    color: white;
+
+    padding: 30px 7%;
+
+    text-align: center;
+}
+
+footer span {
+    color: #00c77d;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+
+    header {
+        padding: 15px;
+    }
+
+    .location {
+        display: none;
+    }
+
+    .hero {
+        padding: 35px 20px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .section {
+        padding: 25px 20px;
+    }
+
+    .cart-panel {
+        width: 100%;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="logo">
+        Cali's on your way🍃
+    </div>
+
+    <div class="location">
+
+        📍 Deliver to:
+        <b>Philippines</b>
+
+    </div>
+
+    <button
+        class="cart-btn"
+        onclick="openCart()">
+
+        🛒 Cart
+        (<span id="cartCount">0</span>)
+
+    </button>
+
+</header>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <h1>
+        Good food.<br>
+        Delivered fast. 🍔
+    </h1>
+
+    <p>
+        Discover your favorite meals
+        and have them delivered to your door.
+    </p>
+
+    <div class="search">
+
+        🔍
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search for food..."
+            onkeyup="searchFood()"
+        >
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="section">
+
+    <h2>
+        choose your meals
+    </h2>
+
+    <div class="categories">
+
+        <div
+            class="category"
+            onclick="filterFood('all')">
+
+            <span>🍽️</span>
+            All
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterFood('burger')">
+
+            <span>🍔</span>
+            Burger
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterFood('pizza')">
+
+            <span>🍕</span>
+            Pizza
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterFood('chicken')">
+
+            <span>🍗</span>
+            Chicken
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterFood('drink')">
+
+            <span>🥤</span>
+            Drinks
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterFood('dessert')">
+
+            <span>🍰</span>
+            Dessert
+
+        </div>
+        <div
+            class="category"
+            onclick="filterFood('More')">
+
+            <span>?</span>
+            More
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     FOOD
+========================= -->
+
+<section class="section">
+
+    <h2>
+        Popular near you
+    </h2>
+
+    <div
+        class="food-grid"
+        id="foodGrid">
+
+
+        <!-- BURGER -->
+
+        <div
+            class="food-card"
+            data-category="burger"
+            data-name="Classic Cheeseburger">
+
+            <div class="food-image">
+                🍔
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Classic Cheeseburger
+                </h3>
+
+                <div class="restaurant">
+                    Burger House
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.8
+                </div>
+
+                <div class="price">
+                    ₱149
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Classic Cheeseburger',
+                        149,
+                        '🍔'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PIZZA -->
+
+        <div
+            class="food-card"
+            data-category="pizza"
+            data-name="Pepperoni Pizza">
+
+            <div class="food-image">
+                🍕
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Pepperoni Pizza
+                </h3>
+
+                <div class="restaurant">
+                    Pizza Corner
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.9
+                </div>
+
+                <div class="price">
+                    ₱399
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Pepperoni Pizza',
+                        399,
+                        '🍕'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CHICKEN -->
+
+        <div
+            class="food-card"
+            data-category="chicken"
+            data-name="Crispy Fried Chicken">
+
+            <div class="food-image">
+                🍗
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Crispy Fried Chicken
+                </h3>
+
+                <div class="restaurant">
+                    Chicken Station
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.7
+                </div>
+
+                <div class="price">
+                    ₱189
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Crispy Fried Chicken',
+                        189,
+                        '🍗'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DRINK -->
+
+        <div
+            class="food-card"
+            data-category="drink"
+            data-name="Iced Coffee">
+
+            <div class="food-image">
+                🧋
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Iced Coffee
+                </h3>
+
+                <div class="restaurant">
+                    Coffee Daily
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.8
+                </div>
+
+                <div class="price">
+                    ₱120
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Iced Coffee',
+                        120,
+                        '🧋'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DESSERT -->
+
+        <div
+            class="food-card"
+            data-category="dessert"
+            data-name="Chocolate Cake">
+
+            <div class="food-image">
+                🍰
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Chocolate Cake
+                </h3>
+
+                <div class="restaurant">
+                    Sweet Treats
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.9
+                </div>
+
+                <div class="price">
+                    ₱180
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Chocolate Cake',
+                        180,
+                        '🍰'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BURGER 2 -->
+
+        <div
+            class="food-card"
+            data-category="burger"
+            data-name="Bacon Burger">
+
+            <div class="food-image">
+                🍔
+            </div>
+
+            <div class="food-info">
+
+                <h3>
+                    Bacon Burger
+                </h3>
+
+                <div class="restaurant">
+                    Burger House
+                </div>
+
+                <div class="rating">
+                    ⭐ 4.8
+                </div>
+
+                <div class="price">
+                    ₱179
+                </div>
+
+                <button
+                    class="add-btn"
+                    onclick="addToCart(
+                        'Bacon Burger',
+                        179,
+                        '🍔'
+                    )">
+
+                    Add to cart
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     OVERLAY
+========================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+    onclick="closeCart()">
+</div>
+
+
+
+<!-- =========================
+     CART
+========================= -->
+
+<div
+    class="cart-panel"
+    id="cartPanel">
+
+
+    <div class="cart-header">
+
+        <h2>
+            Your Cart 🛒
+        </h2>
+
+        <button
+            class="close-cart"
+            onclick="closeCart()">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItems">
+
+        <p style="color:#777;">
+            Your cart is empty.
+        </p>
+
+    </div>
+
+
+    <div class="cart-footer">
+
+
+        <div class="cart-subtotal">
+
+            <span>
+                Subtotal
+            </span>
+
+            <span>
+                ₱<span id="cartSubtotal">0</span>
+            </span>
+
+        </div>
+
+
+        <div class="cart-delivery">
+
+            <span>
+                Delivery Fee
+            </span>
+
+            <span>
+                ₱49
+            </span>
+
+        </div>
+
+
+        <div class="cart-total">
+
+            <span>
+                Total
+            </span>
+
+            <span>
+                ₱<span id="total">0</span>
+            </span>
+
+        </div>
+
+
+        <button
+            class="checkout"
+            onclick="checkout()">
+
+            Checkout
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     CHECKOUT MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="checkoutModal">
+
+
+    <h2>
+        Checkout 🛵
+    </h2>
+
+    <p>
+        Review your order and choose
+        your payment method.
+    </p>
+
+
+    <!-- CUSTOMER -->
+
+    <input
+        type="text"
+        id="name"
+        placeholder="Your name"
+    >
+
+
+    <input
+        type="text"
+        id="address"
+        placeholder="Delivery address"
+    >
+
+
+    <!-- SUMMARY -->
+
+    <div class="checkout-summary">
+
+
+        <div>
+
+            <span>
+                Subtotal
+            </span>
+
+            <b>
+                ₱<span id="checkoutSubtotal">
+                    0
+                </span>
+            </b>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Delivery Fee
+            </span>
+
+            <b>
+                ₱49
+            </b>
+
+        </div>
+
+
+        <hr>
+
+
+        <div class="checkout-total">
+
+            <span>
+                Total
+            </span>
+
+            <b>
+                ₱<span id="checkoutTotal">
+                    0
+                </span>
+            </b>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- PAYMENT -->
+
+    <h3>
+        Payment Method
+    </h3>
+
+
+    <select id="payment">
+
+        <option value="Cash on Delivery">
+            💵 Cash on Delivery
+        </option>
+
+        <option value="GCash">
+            📱 GCash
+        </option>
+
+        <option value="Credit / Debit Card">
+            💳 Credit / Debit Card
+        </option>
+
+    </select>
+
+
+    <button
+        class="confirm"
+        onclick="confirmOrder()">
+
+        Place Order
+
+    </button>
+
+
+    <button
+        class="cancel"
+        onclick="closeCheckout()">
+
+        Cancel
+
+    </button>
+
+
+</div>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <p>
+        © 2026
+        <span>QuickBite</span>
+        — Your food, your way.
+    </p>
+
+</footer>
+
+
+
+<script>
+
+/* =========================
+   CART DATA
+========================= */
+
+let cart = [];
+
+const deliveryFee = 49;
+
+
+/* =========================
+   ADD TO CART
+========================= */
+
+function addToCart(name, price, icon) {
+
+    const existing =
+        cart.find(item => item.name === name);
+
+
+    if (existing) {
+
+        existing.quantity++;
+
+    } else {
+
+        cart.push({
+
+            name: name,
+            price: price,
+            icon: icon,
+            quantity: 1
+
+        });
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* =========================
+   UPDATE CART
+========================= */
+
+function updateCart() {
+
+    const cartItems =
+        document.getElementById("cartItems");
+
+
+    /* TOTAL QUANTITY */
+
+    const itemCount =
+        cart.reduce(
+            (sum, item) =>
+            sum + item.quantity,
+            0
+        );
+
+
+    document.getElementById("cartCount")
+        .textContent = itemCount;
+
+
+    /* EMPTY */
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML =
+            `
+            <p style="color:#777;">
+                Your cart is empty.
+            </p>
+            `;
+
+        document.getElementById("cartSubtotal")
+            .textContent = "0";
+
+        document.getElementById("total")
+            .textContent = "0";
+
+        return;
+
+    }
+
+
+    cartItems.innerHTML = "";
+
+
+    let subtotal = 0;
+
+
+    /* CART ITEMS */
+
+    cart.forEach((item, index) => {
+
+
+        subtotal +=
+            item.price * item.quantity;
+
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "cart-item";
+
+
+        div.innerHTML = `
+
+            <div class="cart-item-icon">
+                ${item.icon}
+            </div>
+
+            <div class="cart-item-info">
+
+                <h4>
+                    ${item.name}
+                </h4>
+
+                <p>
+                    ₱${item.price} each
+                </p>
+
+                <div class="quantity">
+
+                    <button
+                        onclick="decreaseQuantity(${index})">
+
+                        −
+
+                    </button>
+
+                    <span>
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        onclick="increaseQuantity(${index})">
+
+                        +
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <b>
+                    ₱${item.price * item.quantity}
+                </b>
+
+            </div>
+
+        `;
+
+
+        cartItems.appendChild(div);
+
+    });
+
+
+    /* TOTALS */
+
+    const total =
+        subtotal + deliveryFee;
+
+
+    document.getElementById("cartSubtotal")
+        .textContent = subtotal;
+
+
+    document.getElementById("total")
+        .textContent = total;
+
+}
+
+
+/* =========================
+   INCREASE QUANTITY
+========================= */
+
+function increaseQuantity(index) {
+
+    cart[index].quantity++;
+
+    updateCart();
+
+}
+
+
+/* =========================
+   DECREASE QUANTITY
+========================= */
+
+function decreaseQuantity(index) {
+
+    cart[index].quantity--;
+
+
+    if (cart[index].quantity <= 0) {
+
+        cart.splice(index, 1);
+
+    }
+
+
+    updateCart();
+
+}
+
+
+/* =========================
+   OPEN CART
+========================= */
+
+function openCart() {
+
+    document
+        .getElementById("cartPanel")
+        .classList.add("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   CLOSE CART
+========================= */
+
+function closeCart() {
+
+    document
+        .getElementById("cartPanel")
+        .classList.remove("active");
+
+
+    document
+        .getElementById("overlay")
+        .classList.remove("active");
+
+}
+
+
+/* =========================
+   SEARCH FOOD
+========================= */
+
+function searchFood() {
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+
+    cards.forEach(card => {
+
+        const name =
+            card
+            .getAttribute("data-name")
+            .toLowerCase();
+
+
+        if (name.includes(search)) {
+
+            card.style.display =
+                "block";
+
+        } else {
+
+            card.style.display =
+                "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================
+   FILTER FOOD
+========================= */
+
+function filterFood(category) {
+
+    const cards =
+        document.querySelectorAll(".food-card");
+
+
+    cards.forEach(card => {
+
+
+        if (
+            category === "all" ||
+            card.dataset.category === category
+        ) {
+
+            card.style.display =
+                "block";
+
+        } else {
+
+            card.style.display =
+                "none";
+
+        }
+
+    });
+
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function checkout() {
+
+
+    if (cart.length === 0) {
+
+        alert(
+            "Your cart is empty! 🍔"
+        );
+
+        return;
+
+    }
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(item => {
+
+        subtotal +=
+            item.price * item.quantity;
+
+    });
+
+
+    const total =
+        subtotal + deliveryFee;
+
+
+    document
+        .getElementById("checkoutSubtotal")
+        .textContent = subtotal;
+
+
+    document
+        .getElementById("checkoutTotal")
+        .textContent = total;
+
+
+    document
+        .getElementById("checkoutModal")
+        .classList.add("active");
+
+}
+
+
+/* =========================
+   CLOSE CHECKOUT
+========================= */
+
+function closeCheckout() {
+
+    document
+        .getElementById("checkoutModal")
+        .classList.remove("active");
+
+}
+
+
+/* =========================
+   CONFIRM ORDER
+========================= */
+
+function confirmOrder() {
+
+
+    const name =
+        document
+        .getElementById("name")
+        .value
+        .trim();
+
+
+    const address =
+        document
+        .getElementById("address")
+        .value
+        .trim();
+
+
+    const payment =
+        document
+        .getElementById("payment")
+        .value;
+
+
+    if (!name || !address) {
+
+        alert(
+            "Please enter your name and delivery address."
+        );
+
+        return;
+
+    }
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(item => {
+
+        subtotal +=
+            item.price * item.quantity;
+
+    });
+
+
+    const total =
+        subtotal + deliveryFee;
+
+
+    alert(
+
+        "🎉 ORDER CONFIRMED!\n\n" +
+
+        "Customer: " +
+        name +
+        "\n\n" +
+
+        "Delivery Address:\n" +
+        address +
+        "\n\n" +
+
+        "Subtotal: ₱" +
+        subtotal +
+        "\n" +
+
+        "Delivery Fee: ₱" +
+        deliveryFee +
+        "\n" +
+
+        "Total: ₱" +
+        total +
+        "\n\n" +
+
+        "Payment: " +
+        payment +
+        "\n\n" +
+
+        "🛵 Your food is being prepared!"
+
+    );
+
+
+    /* RESET */
+
+    cart = [];
+
+    updateCart();
+
+    closeCheckout();
+
+    closeCart();
+
+
+    /* CLEAR INPUTS */
+
+    document.getElementById("name")
+        .value = "";
+
+    document.getElementById("address")
+        .value = "";
+
+}
+
+</script>
+
+</body>
+</html>
